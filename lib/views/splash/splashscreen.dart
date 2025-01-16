@@ -4,7 +4,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../mainmenu/mainmenu.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 

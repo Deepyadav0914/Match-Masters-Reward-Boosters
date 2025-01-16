@@ -6,7 +6,7 @@ class Detailscreen extends StatefulWidget {
   final String name;
   final GameItemData item;
 
-  Detailscreen({super.key, required this.name, required this.item});
+  const Detailscreen({super.key, required this.name, required this.item});
 
   @override
   _DetailscreenState createState() => _DetailscreenState();
@@ -16,11 +16,6 @@ class _DetailscreenState extends State<Detailscreen> {
   String opensans = 'OpenSans';
 
   String title = "";
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +27,18 @@ class _DetailscreenState extends State<Detailscreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.blue,
         title: Text(
-          widget.item.name.toString(),
+          widget.item.name == null ? "Details" : widget.item.name.toString(),
           style: TextStyle(
             color: Colors.white,
             fontSize: 25.r,
@@ -45,6 +49,8 @@ class _DetailscreenState extends State<Detailscreen> {
         centerTitle: true,
       ),
       body: Container(
+        height: double.infinity,
+        width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.white, Colors.blue],
@@ -53,61 +59,71 @@ class _DetailscreenState extends State<Detailscreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              widget.item.image == ""
-                  ? SizedBox()
-                  : Padding(
-                      padding: EdgeInsets.all(10.r),
-                      child: Center(
-                        child: Image.network(
-                          widget.item.image,
-                          fit: BoxFit.fill,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                10.verticalSpace,
+                widget.item.image == ""
+                    ? SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.all(10.r),
+                        child: Center(
+                          child: Image.network(
+                            widget.item.image,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
-                    ),
-              widget.name == "" &&
-                      widget.item.name == "" &&
-                      widget.item.title == ""
-                  ? SizedBox()
-                  : Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.r),
-                      child: Center(
-                        child: Text(
-                          "${title}",
-                          style: TextStyle(
-                              fontSize: 20.r,
-                              fontFamily: opensans,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700),
+                widget.name == "" &&
+                        widget.item.name == "" &&
+                        widget.item.title == ""
+                    ? SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 15.r, horizontal: 15.r),
+                        child: Column(
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20.r,right: 20.r),
+                                child: Text(
+                                  "${title}",
+                                  style: TextStyle(
+                                      fontSize: 25.r,
+                                      fontFamily: opensans,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                            widget.item.title != null
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 18.r, right: 18.r),
+                                    child: Divider(
+                                      color: Colors.black,
+                                      thickness: 3,
+                                    ),
+                                  )
+                                : SizedBox(),
+                            10.verticalSpace,
+                            Text(
+                              widget.item.description.toString(),
+                              style: TextStyle(
+                                  fontSize: 23.r,
+                                  fontFamily: opensans,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.r, vertical: 5.r),
-                child: Text(
-                  widget.item.description.toString(),
-                  style: TextStyle(
-                      fontSize: 20.r,
-                      fontFamily: opensans,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  forCheckKey() {
-    if (widget.item.title == "") {
-      return "";
-    } else if (widget.name == "") {
-      return "";
-    }
-    return "";
   }
 }

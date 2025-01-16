@@ -126,8 +126,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black,
-                                    offset: Offset(6.r, 6.r),
-                                    blurRadius: 20.r,
+                                    offset: Offset(5.r, 6.r),
+                                    blurRadius: 15.r,
                                   ),
                                 ],
                               ),
