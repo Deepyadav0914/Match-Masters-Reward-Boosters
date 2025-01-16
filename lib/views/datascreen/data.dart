@@ -96,8 +96,8 @@ class DataScreen extends StatelessWidget {
                                   title: Center(
                                     child: Image.network(
                                       data[index].image.toString(),
-                                      height: 150.r,
-                                      width: 160.r,
+                                      height: double.infinity,
+                                      width: double.infinity,
                                       fit: BoxFit.fill,
                                     ),
                                   ),

@@ -18,12 +18,15 @@ class _MenuScreenState extends State<MenuScreen> {
   late Future<List<GameModel>> _gameData;
   String opensans = 'OpenSans';
 
+
   List images = [
     'assets/images/modes.png',
     'assets/images/modifiers.png',
     'assets/images/studios.png',
     'assets/images/book.png',
     'assets/images/faq.png',
+    'assets/images/setting.png',
+
   ];
 
   @override

@@ -81,14 +81,14 @@ class _DetailscreenState extends State<Detailscreen> {
                     ? SizedBox()
                     : Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: 15.r, horizontal: 15.r),
+                            vertical: 15.r, horizontal: 20.r),
                         child: Column(
                           children: [
                             Center(
                               child: Padding(
                                 padding: EdgeInsets.only(left: 20.r,right: 20.r),
                                 child: Text(
-                                  "${title}",
+                                  title,
                                   style: TextStyle(
                                       fontSize: 25.r,
                                       fontFamily: opensans,
@@ -108,13 +108,15 @@ class _DetailscreenState extends State<Detailscreen> {
                                   )
                                 : SizedBox(),
                             10.verticalSpace,
-                            Text(
-                              widget.item.description.toString(),
-                              style: TextStyle(
-                                  fontSize: 23.r,
-                                  fontFamily: opensans,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w700),
+                            Center(
+                              child: Text(
+                                widget.item.description.toString(),
+                                style: TextStyle(
+                                    fontSize: 23.r,
+                                    fontFamily: opensans,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                           ],
                         ),
