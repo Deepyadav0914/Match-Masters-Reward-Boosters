@@ -94,11 +94,14 @@ class DataScreen extends StatelessWidget {
                                     );
                                   },
                                   title: Center(
-                                    child: Image.network(
-                                      data[index].image.toString(),
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      fit: BoxFit.fill,
+                                    child: Padding(
+                                      padding:  EdgeInsets.symmetric(vertical: 7.r),
+                                      child: Image.network(
+                                        data[index].image.toString(),
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
                                 ),

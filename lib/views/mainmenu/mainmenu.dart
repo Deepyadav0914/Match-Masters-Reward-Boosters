@@ -1,11 +1,13 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:matchapp/api/menuapi.dart';
 import 'package:matchapp/model/gamemodel.dart';
-
+import 'package:matchapp/views/gifs/gifs.dart';
+import 'package:matchapp/views/mmreward/mmreward.dart';
+import 'package:matchapp/views/setting/setting.dart';
+import 'package:matchapp/views/statistics/statistics.dart';
 import '../datascreen/data.dart';
-
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -18,38 +20,10 @@ class _MenuScreenState extends State<MenuScreen> {
   late Future<List<GameModel>> _gameData;
   String opensans = 'OpenSans';
 
-
-  List images = [
-    'assets/images/modes.png',
-    'assets/images/modifiers.png',
-    'assets/images/studios.png',
-    'assets/images/book.png',
-    'assets/images/faq.png',
-    'assets/images/setting.png',
-
-  ];
-
   @override
   void initState() {
     super.initState();
-    _gameData = fetchData();
-  }
-
-  Future<List<GameModel>> fetchData() async {
-    try {
-      var response = await Dio().get(
-          'https://miracocopepsi.com/admin/mayur/coc/pradip/ios/mm_rewards/data.json');
-
-      if (response.statusCode == 200) {
-
-          return gameModelFromJson(json.encode(response.data));
-
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
+    _gameData = ApiCall().fetchData();
   }
 
   @override
@@ -82,8 +56,11 @@ class _MenuScreenState extends State<MenuScreen> {
                     future: _gameData,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(color: Colors.white),
+                        return  Center(
+                          child: LoadingAnimationWidget.hexagonDots(
+                            color: Colors.white,
+                            size: 40.sp,
+                          ),
                         );
                       } else if (snapshot.hasError) {
                         return Center(
@@ -103,7 +80,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    _gameData = fetchData();
+                                    _gameData = ApiCall().fetchData();
                                   });
                                 },
                                 child: const Text("Retry"),
@@ -112,14 +89,15 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         );
                       } else if (snapshot.hasData) {
-                        final alldata = snapshot.data;
+                        var alldata = snapshot.data;
 
                         return ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: alldata?.length,
+                          itemCount: MenuList.menuList.length,
                           padding: EdgeInsets.symmetric(
                               vertical: 15.r, horizontal: 15.r),
                           itemBuilder: (context, index) {
+                            var menulist = MenuList.menuList[index];
                             return Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -145,19 +123,87 @@ class _MenuScreenState extends State<MenuScreen> {
                                 padding: EdgeInsets.all(10.r),
                                 child: ListTile(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DataScreen(
-                                            data:  alldata[index].data, name: alldata[index].name,
-                                          ),
-                                        ));
+                                    if (index == 0) {
+                                      Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MmrewardScreen(data: [],),
+                                            ));
+
+                                    } else if (index == 1) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => GifsScreen(data: [],),
+                                          ));
+
+                                    } else if (index == 2) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DataScreen(
+                                              data: alldata![index+1].data,
+                                              name: alldata[index+1].name,
+                                            ),
+                                          ));
+                                    } else if (index == 3) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DataScreen(
+                                              data: alldata![index+1].data,
+                                              name: alldata[index+1].name,
+                                            ),
+                                          ));
+                                    } else if (index == 4) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => StatisticsScreen(),
+                                          ));
+                                    } else if (index == 5) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DataScreen(
+                                              data: alldata![index-4].data,
+                                              name: alldata[index-4].name,
+                                            ),
+                                          ));
+
+                                    } else if (index == 6) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DataScreen(
+                                              data: alldata![index-4].data,
+                                              name: alldata[index-4].name,
+                                            ),
+                                          ));
+                                    } else if (index == 7) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DataScreen(
+                                              data: alldata![index-7].data,
+                                              name: alldata[index-7].name,
+                                            ),
+                                          ));
+
+                                    } else if (index == 8) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SettingScreen(),
+                                          ));
+                                    }
+
                                   },
                                   leading: Image(
-                                    image: AssetImage(images[index]),
+                                    image: AssetImage(menulist.images),
                                   ),
                                   title: Text(
-                                    alldata![index].name.toString(),
+                                    menulist.name.toString(),
                                     style: TextStyle(
                                       fontFamily: opensans,
                                       fontSize: 25.r,
@@ -182,4 +228,25 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
     );
   }
+}
+
+class AddListtile {
+  final String images;
+  final String name;
+
+  AddListtile({required this.images, required this.name});
+}
+
+class MenuList {
+  static final menuList = [
+    AddListtile(images: 'assets/images/reward.png', name: 'MM Rewards'),
+    AddListtile(images: 'assets/images/gif.png', name: 'Top GIFs'),
+    AddListtile(images: 'assets/images/book.png', name: 'Tips & Tricks'),
+    AddListtile(images: 'assets/images/faq.png', name: 'Latest FAQs'),
+    AddListtile(images: 'assets/images/stats.png', name: 'Statistics'),
+    AddListtile(images: 'assets/images/modifiers.png', name: 'Modifiers'),
+    AddListtile(images: 'assets/images/studios.png', name: 'Studios'),
+    AddListtile(images: 'assets/images/modes.png', name: 'Modes'),
+    AddListtile(images: 'assets/images/setting.png', name: 'Settings'),
+  ];
 }

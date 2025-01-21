@@ -37,6 +37,12 @@ dependencies:
   flutter_screenutil:
   loading_animation_widget:
   dio:
+  intl:
+  url_launcher:
+  cached_network_image:
+  path_provider:
+  flutter_file_dialog:
+  delightful_toast:
 
 
 dev_dependencies:
