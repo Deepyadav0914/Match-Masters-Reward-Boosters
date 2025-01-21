@@ -1,12 +1,14 @@
 import 'dart:io';
-import 'dart:math';
+import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 
 class GifsDetailScreen extends StatefulWidget {
   final String data;
@@ -20,64 +22,73 @@ class GifsDetailScreen extends StatefulWidget {
 class _GifsDetailScreenState extends State<GifsDetailScreen> {
   String opensans = 'OpenSans';
   late String sticker;
-  var random = Random();
+  late bool statuses;
 
-  Future<void> _saveImage(String stickerGif) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    String message;
 
-    try {
-      // Download the image
-      final response = await Dio().get(
-        stickerGif,
-        options: Options(responseType: ResponseType.bytes),
-      );
 
-      // Get the temporary directory
-      final dir = await getTemporaryDirectory();
-
-      // Create an image file name
-      final filename = '${dir.path}/SaveImage${random.nextInt(100)}.gif';
-
-      // Write the image to the file
-      final file = File(filename);
-      await file.writeAsBytes(response.data);
-
-      // Prompt the user to save the file
-      final params = SaveFileDialogParams(sourceFilePath: file.path);
-      final finalPath = await FlutterFileDialog.saveFile(params: params);
-
-      if (finalPath != null) {
-        message = 'Image saved successfully.';
-      } else {
-        message = 'Image saving cancelled.';
-      }
-    } catch (e) {
-      message = 'Error saving image: $e';
+  /// Requests necessary permissions based on the platform.
+  Future<bool> checkAndRequestPermissions({required bool skipIfExists}) async {
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return false; // Only Android and iOS platforms are supported
     }
 
-    // Show a snack bar with the result
-    scaffoldMessenger.showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(Icons.done_outline,size: 25,color: Colors.white,),
-          Text(
-            message,
-            style: TextStyle(
-                fontSize: 18.r,
-                fontFamily: opensans,
-                color: Colors.white,
-                fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.black38,
-    ));
+    if (Platform.isAndroid) {
+      final deviceInfo = await DeviceInfoPlugin().androidInfo;
+      final sdkInt = deviceInfo.version.sdkInt;
+
+      if (skipIfExists) {
+        // Read permission is required to check if the file already exists
+        return sdkInt >= 33
+            ? await Permission.photos.request().isGranted
+            : await Permission.storage.request().isGranted;
+      } else {
+        // No read permission required for Android SDK 29 and above
+        return sdkInt >= 29
+            ? true
+            : await Permission.storage.request().isGranted;
+      }
+    } else if (Platform.isIOS) {
+      // iOS permission for saving images to the gallery
+      return skipIfExists
+          ? await Permission.photos.request().isGranted
+          : await Permission.photosAddOnly.request().isGranted;
+    }
+
+    return false; // Unsupported platforms
+  }
+
+
+
+  /// Downloads a GIF from the network and saves it to the gallery.
+  Future<void> _saveGif() async {
+    try {
+      final response = await Dio().get(
+        sticker,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      String gifPath = "network_gif.gif";
+      final result = await SaverGallery.saveImage(
+        Uint8List.fromList(response.data),
+        quality: 100,
+        fileName: gifPath,
+        androidRelativePath: "Pictures/appName/Match Master",
+        skipIfExists: false,
+      );
+      _toastInfo('Sticker saved successfully.');
+    } catch (e) {
+      _toastInfo('Sticker saving cancelled.');
+    }
+  }
+
+  /// Displays a toast message with the given information.
+   _toastInfo(String info) async {
+    print(info);
+    Fluttertoast.showToast(msg: info, toastLength: Toast.LENGTH_LONG);
   }
 
   @override
   void initState() {
+    checkAndRequestPermissions(skipIfExists:false);
     sticker = widget.data;
     super.initState();
   }
@@ -158,7 +169,7 @@ class _GifsDetailScreenState extends State<GifsDetailScreen> {
                         EdgeInsets.symmetric(vertical: 5.r, horizontal: 5.r),
                     child: GestureDetector(
                       onTap: () {
-                        _saveImage(sticker);
+                        _saveGif();
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -202,3 +213,72 @@ class _GifsDetailScreenState extends State<GifsDetailScreen> {
     );
   }
 }
+
+
+// Future<void> _requestPermission() async {
+//   bool statuses;
+//   if (Platform.isAndroid) {
+//     final deviceInfoPlugin = DeviceInfoPlugin();
+//     final deviceInfo = await deviceInfoPlugin.androidInfo;
+//     final sdkInt = deviceInfo.version.sdkInt;
+//     statuses = sdkInt < 29 ? await Permission.storage.request().isGranted : true;
+//   } else {
+//     statuses = await Permission.photosAddOnly.request().isGranted;
+//   }
+//   _toastInfo('Permission Request Result: $statuses');
+// }
+//  -----------------------------------
+//var random = Random();
+// Future<void> _saveImage(String sticker) async {
+//   final scaffoldMessenger = ScaffoldMessenger.of(context);
+//   String message;
+//
+//   try {
+//     // Download the image
+//     final response = await Dio().get(
+//       sticker,
+//       options: Options(responseType: ResponseType.bytes),
+//     );
+//
+//     // Get the temporary directory
+//     final dir = await getTemporaryDirectory();
+//
+//     // Create an Gifs file name
+//     final filename = '${dir.path}/GIf_${random.nextInt(1000)}.gif';
+//
+//     // Write the Gifs to the file
+//     final file = File(filename);
+//     await file.writeAsBytes(response.data);
+//
+//     // Prompt the user to save the file
+//     final params = SaveFileDialogParams(sourceFilePath: file.path);
+//     final finalPath = await FlutterFileDialog.saveFile(params: params);
+//
+//     if (finalPath != null) {
+//       message = 'Image saved successfully.';
+//     } else {
+//       message = 'Image saving cancelled.';
+//     }
+//   } catch (e) {
+//     message = 'Error saving image: $e';
+//   }
+//
+//   // Show a snack bar with the result
+//   scaffoldMessenger.showSnackBar(SnackBar(
+//     content: Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//       children: [
+//
+//         Text(
+//           message,
+//           style: TextStyle(
+//               fontSize: 18.r,
+//               fontFamily: opensans,
+//               color: Colors.white,
+//               fontWeight: FontWeight.bold),
+//         ),
+//       ],
+//     ),
+//     backgroundColor: Colors.black38,
+//   ));
+// }

@@ -67,7 +67,7 @@ class DataScreen extends StatelessWidget {
                                   BoxShadow(
                                     color: Colors.black,
                                     offset: Offset(6.r, 6.r),
-                                    blurRadius: 15.r,
+                                    blurRadius: 10.r,
                                   ),
                                 ],
                               ),
@@ -136,7 +136,7 @@ class DataScreen extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black,
                     offset: Offset(6.r, 6.r),
-                    blurRadius: 20.r,
+                    blurRadius: 10.r,
                   ),
                 ],
               ),

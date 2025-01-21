@@ -41,8 +41,10 @@ dependencies:
   url_launcher:
   cached_network_image:
   path_provider:
-  flutter_file_dialog:
-  delightful_toast:
+  saver_gallery:
+  permission_handler:
+  fluttertoast:
+  device_info_plus:
 
 
 dev_dependencies:

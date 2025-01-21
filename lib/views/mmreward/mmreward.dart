@@ -135,9 +135,9 @@ class _MmrewardScreenState extends State<MmrewardScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        10.verticalSpace,
+                        8.verticalSpace,
                         SizedBox(
-                          height: (data.length / 2).ceil() * 190.r,
+                          height: (data.length / 2).ceil() * 200.r,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 vertical: 8.r, horizontal: 10.r),
@@ -147,9 +147,7 @@ class _MmrewardScreenState extends State<MmrewardScreen> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 10.r,
-                                mainAxisSpacing: 15.r,
-                                childAspectRatio: 1.0, // Square grid items
+                               // Square grid items
                               ),
                               itemCount: data.length,
                               itemBuilder: (context, index) {
