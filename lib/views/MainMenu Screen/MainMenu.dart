@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:get/get.dart';
 import 'package:matchapp/api/menuapi.dart';
 import 'package:matchapp/model/gamemodel.dart';
-import 'package:matchapp/views/gifs/gifs.dart';
-import 'package:matchapp/views/mmreward/mmreward.dart';
-import 'package:matchapp/views/setting/setting.dart';
-import 'package:matchapp/views/statistics/statistics.dart';
-import '../datascreen/data.dart';
+import '../Data Screen/Data.dart';
+import '../Gifs Screen/Gifs.dart';
+import '../Gifs Screen/GifsController.dart';
+import '../MMReward Screen/Mmreward.dart';
+import '../Setting Screen/Setting.dart';
+import '../Statistics Screen/Statistics.dart';
+
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+  MenuScreen({super.key, required List data});
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -46,7 +49,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   color: Colors.black,
                   fontFamily: opensans,
                   fontSize: 30.r,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               10.verticalSpace,
@@ -56,7 +59,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     future: _gameData,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return  Center(
+                        return Center(
                           child: LoadingAnimationWidget.hexagonDots(
                             color: Colors.white,
                             size: 40.sp,
@@ -92,7 +95,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         var alldata = snapshot.data;
 
                         return ListView.builder(
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: MenuList.menuList.length,
                           padding: EdgeInsets.symmetric(
                               vertical: 15.r, horizontal: 15.r),
@@ -101,103 +104,55 @@ class _MenuScreenState extends State<MenuScreen> {
                             return Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(14.r),
+                                borderRadius: BorderRadius.circular(22.r),
                                 border:
                                     Border.all(width: 3.r, color: Colors.black),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black,
-                                    offset: Offset(5.r, 6.r),
-                                    blurRadius: 15.r,
+                                    offset: Offset(6.r, 6.r),
+                                    blurRadius: 10.r,
                                   ),
                                 ],
                               ),
                               margin: EdgeInsets.symmetric(vertical: 10.r),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(11.r),
+                                  borderRadius: BorderRadius.circular(18.r),
                                   border: Border.all(
                                       width: 3.r, color: Colors.black),
                                 ),
-                                margin: EdgeInsets.all(6.r),
-                                padding: EdgeInsets.all(10.r),
+                                margin: EdgeInsets.all(4.r),
+                                padding: EdgeInsets.all(8.r),
                                 child: ListTile(
                                   onTap: () {
                                     if (index == 0) {
-                                      Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MmrewardScreen(data: [],),
-                                            ));
-
+                                      Get.to(() => MmrewardScreen());
                                     } else if (index == 1) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => GifsScreen(data: [],),
-                                          ));
-
-                                    } else if (index == 2) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DataScreen(
-                                              data: alldata![index+1].data,
-                                              name: alldata[index+1].name,
-                                            ),
-                                          ));
-                                    } else if (index == 3) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DataScreen(
-                                              data: alldata![index+1].data,
-                                              name: alldata[index+1].name,
-                                            ),
+                                      Get.to(() => GifsScreen(),
+                                          binding: BindingsBuilder(() {
+                                        Get.put(GifsController());
+                                      }));
+                                    } else if (index == 2 || index == 3) {
+                                      Get.to(() => DataScreen(
+                                            data: alldata![index + 1].data,
+                                            name: alldata[index + 1].name,
                                           ));
                                     } else if (index == 4) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => StatisticsScreen(),
-                                          ));
-                                    } else if (index == 5) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DataScreen(
-                                              data: alldata![index-4].data,
-                                              name: alldata[index-4].name,
-                                            ),
-                                          ));
-
-                                    } else if (index == 6) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DataScreen(
-                                              data: alldata![index-4].data,
-                                              name: alldata[index-4].name,
-                                            ),
+                                      Get.to(() => const StatisticsScreen());
+                                    } else if (index == 5 || index == 6) {
+                                      Get.to(() => DataScreen(
+                                            data: alldata![index - 4].data,
+                                            name: alldata[index - 4].name,
                                           ));
                                     } else if (index == 7) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DataScreen(
-                                              data: alldata![index-7].data,
-                                              name: alldata[index-7].name,
-                                            ),
+                                      Get.to(() => DataScreen(
+                                            data: alldata![index - 7].data,
+                                            name: alldata[index - 7].name,
                                           ));
-
                                     } else if (index == 8) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SettingScreen(),
-                                          ));
+                                      Get.to(() => const SettingScreen());
                                     }
-
                                   },
                                   leading: Image(
                                     image: AssetImage(menulist.images),

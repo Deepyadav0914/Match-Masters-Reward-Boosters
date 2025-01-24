@@ -54,24 +54,23 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               return Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(22.r),
                   border: Border.all(width: 3.r, color: Colors.black),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black,
-                      offset: Offset(5.r, 6.r),
-                      blurRadius: 15.r,
+                      offset: Offset(6.r, 6.r),
+                      blurRadius: 10.r,
                     ),
                   ],
                 ),
                 margin: EdgeInsets.symmetric(vertical: 10.r),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11.r),
+                    borderRadius: BorderRadius.circular(18.r),
                     border: Border.all(width: 3.r, color: Colors.black),
                   ),
-                  margin: EdgeInsets.all(6.r),
-
+                  margin: EdgeInsets.all(4.r),
                   child: ListTile(
                     title: Column(
                       children: [
@@ -93,32 +92,35 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            menulist.name=='Unlocked GIFs'?
-
-                            Image.asset('assets/images/gif.png',
-                              height: 30.r,
-                            ):
-                            Image.asset('assets/images/reward.png',
-                              height: 30.r,),
+                            menulist.name == 'Unlocked GIFs'
+                                ? Image.asset(
+                                    'assets/images/gif.png',
+                                    height: 30.r,
+                                  )
+                                : Image.asset(
+                                    'assets/images/reward.png',
+                                    height: 30.r,
+                                  ),
                             10.horizontalSpace,
-                            menulist.name=='Unlocked GIFs'?
-                            Text(
-                              '7/40',
-                              style: TextStyle(
-                                fontFamily: opensans,
-                                fontSize: 25.r,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
-                            ): Text(
-                              '176',
-                              style: TextStyle(
-                                fontFamily: opensans,
-                                fontSize: 25.r,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
-                            ),
+                            menulist.name == 'Unlocked GIFs'
+                                ? Text(
+                                    '7/40',
+                                    style: TextStyle(
+                                      fontFamily: opensans,
+                                      fontSize: 25.r,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                  )
+                                : Text(
+                                    '176',
+                                    style: TextStyle(
+                                      fontFamily: opensans,
+                                      fontSize: 25.r,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
                           ],
                         ),
                       ],

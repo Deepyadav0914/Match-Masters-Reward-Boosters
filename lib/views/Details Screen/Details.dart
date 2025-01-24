@@ -1,35 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../model/gamemodel.dart';
 
-class Detailscreen extends StatefulWidget {
-  final String name;
-  final GameItemData item;
+class DetailscreenController extends GetxController {
+  // You can manage any state or logic related to the screen here if needed
+  RxString title = ''.obs;
 
-  const Detailscreen({super.key, required this.name, required this.item});
-
-  @override
-  _DetailscreenState createState() => _DetailscreenState();
 }
 
-class _DetailscreenState extends State<Detailscreen> {
-  String opensans = 'OpenSans';
+class Detailscreen extends StatelessWidget {
+  final String name;
+  final GameItemData item;
+  final String opensans = 'OpenSans';
 
-  String title = "";
+  // Injecting the GetX controller
+  final DetailscreenController controller = Get.put(DetailscreenController());
+
+  Detailscreen({super.key, required this.name, required this.item});
 
   @override
   Widget build(BuildContext context) {
-    if (widget.item.title != null) {
-      title = widget.item.title.toString();
-    } else if (widget.item.name != null) {
-      title = "";
+    // Set the title based on the item data
+    if (item.title != null) {
+      controller.title.value = item.title.toString();
+    } else if (item.name != null) {
+      controller.title.value = '';
     }
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back(); // Use GetX to go back
           },
           icon: Icon(
             Icons.arrow_back,
@@ -37,15 +40,15 @@ class _DetailscreenState extends State<Detailscreen> {
           ),
         ),
         backgroundColor: Colors.blue,
-        title: Text(
-          widget.item.name == null ? "Details" : widget.item.name.toString(),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25.r,
-            fontFamily: opensans,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title:  Text(
+              item.name == null ? "Details" : item.name.toString(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25.r,
+                fontFamily: opensans,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
         centerTitle: true,
       ),
       body: Container(
@@ -64,20 +67,18 @@ class _DetailscreenState extends State<Detailscreen> {
             child: Column(
               children: [
                 10.verticalSpace,
-                widget.item.image == ""
+                item.image == ""
                     ? SizedBox()
                     : Padding(
                         padding: EdgeInsets.all(10.r),
                         child: Center(
                           child: Image.network(
-                            widget.item.image,
+                            item.image,
                             fit: BoxFit.fill,
                           ),
                         ),
                       ),
-                widget.name == "" &&
-                        widget.item.name == "" &&
-                        widget.item.title == ""
+                name == "" && item.name == "" && item.title == ""
                     ? SizedBox()
                     : Padding(
                         padding: EdgeInsets.symmetric(
@@ -86,18 +87,19 @@ class _DetailscreenState extends State<Detailscreen> {
                           children: [
                             Center(
                               child: Padding(
-                                padding: EdgeInsets.only(left: 20.r,right: 20.r),
-                                child: Text(
-                                  title,
-                                  style: TextStyle(
-                                      fontSize: 25.r,
-                                      fontFamily: opensans,
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.w700),
-                                ),
+                                padding:
+                                    EdgeInsets.only(left: 20.r, right: 20.r),
+                                child: Obx(() => Text(
+                                      controller.title.value,
+                                      style: TextStyle(
+                                          fontSize: 25.r,
+                                          fontFamily: opensans,
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w700),
+                                    )),
                               ),
                             ),
-                            widget.item.title != null
+                            item.title != null
                                 ? Padding(
                                     padding: EdgeInsets.only(
                                         left: 18.r, right: 18.r),
@@ -110,9 +112,9 @@ class _DetailscreenState extends State<Detailscreen> {
                             10.verticalSpace,
                             Center(
                               child: Text(
-                                widget.item.description.toString(),
+                                item.description.toString(),
                                 style: TextStyle(
-                                    fontSize: 23.r,
+                                    fontSize: 22.r,
                                     fontFamily: opensans,
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w700),

@@ -55,7 +55,7 @@ class _SettingScreenState extends State<SettingScreen> {
               return Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(22.r),
                   border: Border.all(width: 3.r, color: Colors.black),
                   boxShadow: [
                     BoxShadow(
@@ -68,10 +68,10 @@ class _SettingScreenState extends State<SettingScreen> {
                 margin: EdgeInsets.symmetric(vertical: 10.r),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11.r),
+                    borderRadius: BorderRadius.circular(18.r),
                     border: Border.all(width: 3.r, color: Colors.black),
                   ),
-                  margin: EdgeInsets.all(6.r),
+                  margin: EdgeInsets.all(4.r),
                   padding: EdgeInsets.all(6.r),
                   child: ListTile(
                     onTap: () {

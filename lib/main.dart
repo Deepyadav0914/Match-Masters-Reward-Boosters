@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:matchapp/views/splash/splashscreen.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:matchapp/views/splash%20Screen/SplashScreen.dart';
 
-void main() {
+
+
+Future<void> main() async {
+  await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
+   // Initialize storage
   runApp(const MyApp());
 }
+
+GetStorage box = GetStorage();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,12 +24,12 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
-
-        debugShowCheckedModeBanner: false,
-
-        home: SplashScreen(),
-      ),
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen(),
+        );
+      },
     );
   }
 }

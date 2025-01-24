@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:get/get.dart';
+import '../MainMenu Screen/MainMenu.dart';
 
-import '../mainmenu/mainmenu.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,13 +16,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Navigate to HomeScreen after 3 seconds
+    // Navigate to MenuScreen after 3 seconds using GetX
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MenuScreen()),
-      );
+      Get.off(() => MenuScreen(data: [],));
     });
   }
 
