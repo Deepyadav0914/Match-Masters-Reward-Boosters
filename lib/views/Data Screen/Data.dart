@@ -3,17 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../model/gamemodel.dart';
 import '../Details Screen/Details.dart';
-
-class DataScreenController extends GetxController {}
+import 'DataScreenController.dart';
 
 class DataScreen extends StatelessWidget {
-  final String name;
-  final List<GameItemData> data;
-  final String opensans = 'OpenSans';
-
-  final DataScreenController controller = Get.put(DataScreenController());
-
-  DataScreen({super.key, required this.name, required this.data});
+  DataScreen({super.key});
+  final controller = Get.put(DataScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +24,11 @@ class DataScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.blue,
         title: Text(
-          name,
+          controller.name,
           style: TextStyle(
             color: Colors.white,
             fontSize: 25.r,
-            fontFamily: opensans,
+            fontFamily: 'opensans',
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -52,7 +46,7 @@ class DataScreen extends StatelessWidget {
           child: Column(
             children: [
               // Determine whether to use ListView or GridView
-              name == 'Tips & Tricks' || name == 'FAQs'
+              controller.name == 'Tips & Tricks' || controller.name == 'FAQs'
                   ? forListView()
                   : Expanded(
                       child: SizedBox(
@@ -61,12 +55,12 @@ class DataScreen extends StatelessWidget {
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
-                          itemCount: data.length,
+                          itemCount: controller.alldata.length,
                           padding: EdgeInsets.symmetric(
                               vertical: 20.r, horizontal: 20.r),
                           itemBuilder: (context, index) {
-                            final item = data[index];
-                            return buildGridTile(item);
+                            final item = controller.alldata[index];
+                            return buildGridTile(item, index);
                           },
                         ),
                       ),
@@ -83,10 +77,10 @@ class DataScreen extends StatelessWidget {
     return Expanded(
       child: SizedBox(
         child: ListView.builder(
-          itemCount: data.length,
+          itemCount: controller.alldata.length,
           padding: EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
           itemBuilder: (context, index) {
-            final item = data[index];
+            final item = controller.alldata[index];
             return buildListTile(item, index);
           },
         ),
@@ -95,7 +89,7 @@ class DataScreen extends StatelessWidget {
   }
 
   // Grid tile widget
-  Widget buildGridTile(GameItemData item) {
+  Widget buildGridTile(GameItemData item, int index) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -119,10 +113,15 @@ class DataScreen extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 5.r),
         child: ListTile(
           onTap: () {
-            Get.to(() => Detailscreen(
-                  name: name,
-                  item: item,
-                ));
+            Get.to(
+                () => Detailscreen(
+                    // name: controller.name.value,
+                    // item: item,
+                    ),
+                arguments: {
+                  // 'name':controller.alldata[index].name,
+                  'data': item
+                });
           },
           title: Center(
             child: Padding(
@@ -162,18 +161,17 @@ class DataScreen extends StatelessWidget {
           border: Border.all(width: 3.r, color: Colors.black),
         ),
         margin: EdgeInsets.all(4.r),
-        padding: EdgeInsets.all(6.r),
         child: ListTile(
           onTap: () {
-            Get.to(() => Detailscreen(
-                  name: name,
-                  item: item,
-                ));
+            Get.to(() => Detailscreen(), arguments: {
+              // 'name':controller.alldata.first.name,
+              'data': item
+            });
           },
           leading: Text(
             '${index + 1}.',
             style: TextStyle(
-              fontFamily: opensans,
+              fontFamily: 'opensans',
               fontSize: 22.r,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -183,7 +181,7 @@ class DataScreen extends StatelessWidget {
             item.title.toString(),
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontFamily: opensans,
+              fontFamily: 'opensans',
               fontSize: 22.r,
               fontWeight: FontWeight.w600,
               color: Colors.black87,

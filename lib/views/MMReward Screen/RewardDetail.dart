@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../Gifs Screen/GifsController.dart';
+import 'MmrewardController.dart';
 import 'RewardDetailController.dart';
 
 class RewardDetailScreen extends StatelessWidget {
   RewardDetailScreen({super.key});
 
-  final int rewardCoins = 150; // Reward coin amount
-  final RxBool isClaimed = false.obs; // Observable to track claim state
-  final RewardDetailController controller = Get.find<RewardDetailController>();
+
+  final RewardDetailController controller = Get.put(RewardDetailController());
+  final Mmcontroller = Get.put(MmrewardController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Get.back(result: 'claimed'),
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         backgroundColor: Colors.blue,
@@ -91,19 +92,22 @@ class RewardDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Obx(() => _buildActionButton(
-                            isClaimed.value ? 'Claimed' : 'Claim',
-                            isClaimed.value
+
+                            controller.isClaimed.value ? 'Claimed' : 'Claim',
+                            controller.isClaimed.value
                                 ? null
                                 : () {
-                                    // Collect coins logic
+                              Mmcontroller.claimedReward(controller.formattedDate, controller.title);
+
+                              // Collect coins logic
                                     final gifsController =
                                         Get.put(GifsController());
-                                    gifsController.collectCoins(rewardCoins);
+                                    gifsController.collectCoins(controller.rewardCoins);
                                     // Update button state
-                                    isClaimed.value = true;
+
                                     Get.snackbar(
                                       "Success!",
-                                      "You have collected $rewardCoins coins!",
+                                      "You have collected ${controller.rewardCoins} coins!",
                                       snackPosition: SnackPosition.TOP,
                                       padding: EdgeInsets.all(10.r),
                                       backgroundColor: Colors.green.shade400,

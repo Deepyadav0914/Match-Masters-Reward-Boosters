@@ -48,8 +48,7 @@ class _SettingScreenState extends State<SettingScreen> {
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             itemCount: MenuList.menuList.length,
-            padding:
-                EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
+            padding: EdgeInsets.symmetric(vertical: 15.r, horizontal: 15.r),
             itemBuilder: (context, index) {
               var menulist = MenuList.menuList[index];
               return Container(

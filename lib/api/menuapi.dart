@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import '../model/gamemodel.dart';
 import '../model/gifmodel.dart';
@@ -11,6 +12,7 @@ class ApiCall {
           'https://miracocopepsi.com/admin/mayur/coc/pradip/ios/mm_rewards/data.json');
 
       if (response.statusCode == 200) {
+        print(response.data);
         return gameModelFromJson(json.encode(response.data));
       } else {
         throw Exception('Failed to load data');

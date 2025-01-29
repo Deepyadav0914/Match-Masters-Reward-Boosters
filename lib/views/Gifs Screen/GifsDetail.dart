@@ -6,9 +6,11 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'GifsDetailController.dart';
 
 class GifsDetailScreen extends StatelessWidget {
-  final GifsDetailController controller = Get.put(
-    GifsDetailController(Get.arguments), // Pass sticker data as arguments
-  );
+  GifsDetailScreen({super.key});
+
+  final controller =
+      Get.put(GifsDetailController() // Pass sticker data as arguments
+          );
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +49,19 @@ class GifsDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 90.verticalSpace,
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60.r),
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) {
-                        return LoadingAnimationWidget.threeArchedCircle(
-                          color: Colors.black45,
-                          size: 40.sp,
-                        );
-                      },
-                      imageUrl: controller.sticker,
+                Obx(
+                  () => Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 60.r),
+                      child: CachedNetworkImage(
+                        placeholder: (context, url) {
+                          return LoadingAnimationWidget.threeArchedCircle(
+                            color: Colors.black45,
+                            size: 40.sp,
+                          );
+                        },
+                        imageUrl: controller.stricker,
+                      ),
                     ),
                   ),
                 ),
@@ -78,7 +82,7 @@ class GifsDetailScreen extends StatelessWidget {
                       ],
                     ),
                     margin:
-                    EdgeInsets.symmetric(vertical: 5.r, horizontal: 5.r),
+                        EdgeInsets.symmetric(vertical: 5.r, horizontal: 5.r),
                     child: GestureDetector(
                       onTap: () => controller.saveGif(),
                       child: Container(

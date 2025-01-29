@@ -29,7 +29,7 @@ class GifsController extends GetxController {
   }
 
   // Method to collect reward coins
-  void collectCoins(int coins) {
+  void collectCoins(int coins,) {
     totalCoins.value += coins;
     saveCoins(); // Save updated coins to local storage
     print("Total coins: ${totalCoins.value}");

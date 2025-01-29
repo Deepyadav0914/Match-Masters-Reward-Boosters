@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:get/get.dart';
-import 'package:matchapp/api/menuapi.dart';
-import 'package:matchapp/model/gamemodel.dart';
+import 'package:matchapp/views/MainMenu%20Screen/MainMenuController.dart';
+import '../../api/menuapi.dart';
 import '../Data Screen/Data.dart';
 import '../Gifs Screen/Gifs.dart';
 import '../Gifs Screen/GifsController.dart';
@@ -11,23 +10,10 @@ import '../MMReward Screen/Mmreward.dart';
 import '../Setting Screen/Setting.dart';
 import '../Statistics Screen/Statistics.dart';
 
+class MenuScreen extends StatelessWidget {
+  MenuScreen({super.key});
 
-class MenuScreen extends StatefulWidget {
-  MenuScreen({super.key, required List data});
-
-  @override
-  State<MenuScreen> createState() => _MenuScreenState();
-}
-
-class _MenuScreenState extends State<MenuScreen> {
-  late Future<List<GameModel>> _gameData;
-  String opensans = 'OpenSans';
-
-  @override
-  void initState() {
-    super.initState();
-    _gameData = ApiCall().fetchData();
-  }
+  final controller = Get.put(MainMenuController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,135 +33,100 @@ class _MenuScreenState extends State<MenuScreen> {
                 "Main Menu",
                 style: TextStyle(
                   color: Colors.black,
-                  fontFamily: opensans,
+                  fontFamily: 'opensans',
                   fontSize: 30.r,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               10.verticalSpace,
-              Expanded(
-                child: SizedBox(
-                  child: FutureBuilder<List<GameModel>>(
-                    future: _gameData,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: LoadingAnimationWidget.hexagonDots(
-                            color: Colors.white,
-                            size: 40.sp,
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Failed to load data. Please try again.',
-                                style: TextStyle(
-                                  fontSize: 16.r,
-                                  color: Colors.red.shade700,
-                                  fontWeight: FontWeight.bold,
+              FutureBuilder(
+                future: ApiCall().fetchData(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: MenuList.menuList.length,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 15.r, horizontal: 15.r),
+                        itemBuilder: (context, index) {
+                          var alldata = snapshot.data;
+                          var menulist = MenuList.menuList[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(22.r),
+                              border:
+                                  Border.all(width: 3.r, color: Colors.black),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  offset: Offset(6.r, 6.r),
+                                  blurRadius: 10.r,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                              10.verticalSpace,
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _gameData = ApiCall().fetchData();
-                                  });
-                                },
-                                child: const Text("Retry"),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else if (snapshot.hasData) {
-                        var alldata = snapshot.data;
-
-                        return ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: MenuList.menuList.length,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15.r, horizontal: 15.r),
-                          itemBuilder: (context, index) {
-                            var menulist = MenuList.menuList[index];
-                            return Container(
+                              ],
+                            ),
+                            margin: EdgeInsets.symmetric(vertical: 10.r),
+                            child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(22.r),
+                                borderRadius: BorderRadius.circular(18.r),
                                 border:
                                     Border.all(width: 3.r, color: Colors.black),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    offset: Offset(6.r, 6.r),
-                                    blurRadius: 10.r,
-                                  ),
-                                ],
                               ),
-                              margin: EdgeInsets.symmetric(vertical: 10.r),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18.r),
-                                  border: Border.all(
-                                      width: 3.r, color: Colors.black),
+                              margin: EdgeInsets.all(4.r),
+                              padding: EdgeInsets.all(8.r),
+                              child: ListTile(
+                                onTap: () {
+                                  if (index == 0) {
+                                    Get.to(() => MmrewardScreen());
+                                  } else if (index == 1) {
+                                    Get.to(() => GifsScreen(),
+                                        binding: BindingsBuilder(() {
+                                      Get.put(GifsController());
+                                    }));
+                                  } else if (index == 2 || index == 3) {
+                                    Get.to(() => DataScreen(), arguments: {
+                                      'data': alldata![index + 1].data,
+                                      'name': alldata[index + 1].name
+                                    });
+                                  } else if (index == 4) {
+                                    Get.to(() => const StatisticsScreen());
+                                  } else if (index == 5 || index == 6) {
+                                    Get.to(() => DataScreen(), arguments: {
+                                      'data': alldata![index - 4].data,
+                                      'name': alldata[index - 4].name
+                                    });
+                                  } else if (index == 7) {
+                                    Get.to(() => DataScreen(), arguments: {
+                                      'data': alldata![index - 7].data,
+                                      'name': alldata[index - 7].name
+                                    });
+                                  } else if (index == 8) {
+                                    Get.to(() => const SettingScreen());
+                                  }
+                                },
+                                leading: Image(
+                                  image: AssetImage(menulist.images),
                                 ),
-                                margin: EdgeInsets.all(4.r),
-                                padding: EdgeInsets.all(8.r),
-                                child: ListTile(
-                                  onTap: () {
-                                    if (index == 0) {
-                                      Get.to(() => MmrewardScreen());
-                                    } else if (index == 1) {
-                                      Get.to(() => GifsScreen(),
-                                          binding: BindingsBuilder(() {
-                                        Get.put(GifsController());
-                                      }));
-                                    } else if (index == 2 || index == 3) {
-                                      Get.to(() => DataScreen(
-                                            data: alldata![index + 1].data,
-                                            name: alldata[index + 1].name,
-                                          ));
-                                    } else if (index == 4) {
-                                      Get.to(() => const StatisticsScreen());
-                                    } else if (index == 5 || index == 6) {
-                                      Get.to(() => DataScreen(
-                                            data: alldata![index - 4].data,
-                                            name: alldata[index - 4].name,
-                                          ));
-                                    } else if (index == 7) {
-                                      Get.to(() => DataScreen(
-                                            data: alldata![index - 7].data,
-                                            name: alldata[index - 7].name,
-                                          ));
-                                    } else if (index == 8) {
-                                      Get.to(() => const SettingScreen());
-                                    }
-                                  },
-                                  leading: Image(
-                                    image: AssetImage(menulist.images),
-                                  ),
-                                  title: Text(
-                                    menulist.name.toString(),
-                                    style: TextStyle(
-                                      fontFamily: opensans,
-                                      fontSize: 25.r,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black87,
-                                    ),
+                                title: Text(
+                                  menulist.name.toString(),
+                                  style: TextStyle(
+                                    fontFamily: 'opensans',
+                                    fontSize: 25.r,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      }
-                      return 0.verticalSpace;
-                    },
-                  ),
-                ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Container();
+                },
               ),
             ],
           ),

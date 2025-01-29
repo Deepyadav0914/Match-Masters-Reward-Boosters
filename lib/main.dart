@@ -4,12 +4,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:matchapp/views/splash%20Screen/SplashScreen.dart';
 
-
-
 Future<void> main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-   // Initialize storage
+  // Initialize storage
   runApp(const MyApp());
 }
 

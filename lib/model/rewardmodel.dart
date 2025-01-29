@@ -5,14 +5,14 @@ RewardModel rewardModelFromJson(String str) => RewardModel.fromJson(json.decode(
 String rewardModelToJson(RewardModel data) => json.encode(data.toJson());
 
 class RewardModel {
-  List<Datum> data;
+  List<MMreward> data;
 
   RewardModel({
     required this.data,
   });
 
   factory RewardModel.fromJson(Map<String, dynamic> json) => RewardModel(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<MMreward>.from(json["data"].map((x) => MMreward.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -20,14 +20,14 @@ class RewardModel {
   };
 }
 
-class Datum {
+class MMreward {
   String title;
   String description;
   String image;
   String rewardUrl;
   String date;
 
-  Datum({
+  MMreward({
     required this.title,
     required this.description,
     required this.image,
@@ -35,13 +35,15 @@ class Datum {
     required this.date,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory MMreward.fromJson(Map<String, dynamic> json) => MMreward(
     title: json["title"]!,
     description: json["description"],
     image: json["image"]!,
     rewardUrl: json["rewardURL"],
     date: json["date"],
   );
+
+
 
   Map<String, dynamic> toJson() => {
     "title": title,

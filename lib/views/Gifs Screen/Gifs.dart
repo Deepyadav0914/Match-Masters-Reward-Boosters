@@ -57,7 +57,7 @@ class GifsScreen extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'OpenSans',
-                              fontSize: 20.r,
+                              fontSize: 18.r,
                               fontWeight: FontWeight.bold,
                             ),
                           )),
@@ -154,11 +154,10 @@ class GifsScreen extends StatelessWidget {
                                             vertical: 3.r, horizontal: 5.r),
                                         child: GestureDetector(
                                           onTap: () {
-                                            Get.to(
-                                              () => GifsDetailScreen(),
-                                              arguments: allgifs[
-                                                  index], // Pass the sticker URL or data
-                                            );
+                                            Get.to(() => GifsDetailScreen(),
+                                                arguments: {
+                                                  'Gifs': allgifs[index]
+                                                });
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -8,10 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:saver_gallery/saver_gallery.dart';
 
 class GifsDetailController extends GetxController {
-  final String sticker;
+  final RxString _sticker = ''.obs;
   String opensans = 'OpenSans';
-
-  GifsDetailController(this.sticker);
 
   /// Requests necessary permissions based on the platform.
   Future<bool> checkAndRequestPermissions({required bool skipIfExists}) async {
@@ -43,7 +42,7 @@ class GifsDetailController extends GetxController {
   Future<void> saveGif() async {
     try {
       final response = await Dio().get(
-        sticker,
+        _sticker.value,
         options: Options(responseType: ResponseType.bytes),
       );
       String gifPath = "network_gif.gif";
@@ -68,6 +67,10 @@ class GifsDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _sticker.value = Get.arguments['Gifs'];
+    log(_sticker.value);
     checkAndRequestPermissions(skipIfExists: false);
   }
+
+  String get stricker => _sticker.value;
 }
