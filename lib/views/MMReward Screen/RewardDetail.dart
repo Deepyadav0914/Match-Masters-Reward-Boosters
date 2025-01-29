@@ -8,7 +8,6 @@ import 'RewardDetailController.dart';
 class RewardDetailScreen extends StatelessWidget {
   RewardDetailScreen({super.key});
 
-
   final RewardDetailController controller = Get.put(RewardDetailController());
   final Mmcontroller = Get.put(MmrewardController());
 
@@ -17,7 +16,7 @@ class RewardDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Get.back(result: 'claimed'),
+          onPressed: () => Get.back(),
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         backgroundColor: Colors.blue,
@@ -91,30 +90,27 @@ class RewardDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Obx(() => _buildActionButton(
+                      _buildActionButton(
+                        controller.isClaimed.value ? 'Claimed' : 'Claim',
+                        controller.isClaimed.value
+                            ? null
+                            : () {
+                                // Collect coins logic
+                                final gifsController =
+                                    Get.put(GifsController());
+                                gifsController.collectCoins(controller
+                                    .rewardCoins); // Update button state
 
-                            controller.isClaimed.value ? 'Claimed' : 'Claim',
-                            controller.isClaimed.value
-                                ? null
-                                : () {
-                              Mmcontroller.claimedReward(controller.formattedDate, controller.title);
-
-                              // Collect coins logic
-                                    final gifsController =
-                                        Get.put(GifsController());
-                                    gifsController.collectCoins(controller.rewardCoins);
-                                    // Update button state
-
-                                    Get.snackbar(
-                                      "Success!",
-                                      "You have collected ${controller.rewardCoins} coins!",
-                                      snackPosition: SnackPosition.TOP,
-                                      padding: EdgeInsets.all(10.r),
-                                      backgroundColor: Colors.green.shade400,
-                                      colorText: Colors.white,
-                                    );
-                                  },
-                          )),
+                                Get.snackbar(
+                                  "Success!",
+                                  "You have collected ${controller.rewardCoins} coins!",
+                                  snackPosition: SnackPosition.TOP,
+                                  padding: EdgeInsets.all(10.r),
+                                  backgroundColor: Colors.green.shade400,
+                                  colorText: Colors.white,
+                                );
+                              },
+                      ),
                       15.horizontalSpace,
                       _buildActionButton('Share', () {}),
                     ],

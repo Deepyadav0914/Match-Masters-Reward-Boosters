@@ -223,6 +223,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../main.dart';
 import 'MmrewardController.dart';
 import 'RewardDetail.dart';
 
@@ -281,7 +282,9 @@ class MmrewardScreen extends StatelessWidget {
               }
             }
 
-            
+            final claimedRewards =
+                box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+            print("is claimed == ${claimedRewards}");
             return ListView.builder(
               itemCount: groupedData.keys.length,
               itemBuilder: (context, index) {
@@ -315,7 +318,11 @@ class MmrewardScreen extends StatelessWidget {
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             final reward = data[index];
+                            String rewardKey =
+                                "${reward.title}_${reward.date}_${index}";
+                            print("reward Key == ${rewardKey}");
 
+                            bool isClaimed = claimedRewards[rewardKey] ?? false;
                             return Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -333,15 +340,14 @@ class MmrewardScreen extends StatelessWidget {
                               margin: EdgeInsets.symmetric(
                                   vertical: 5.r, horizontal: 5.r),
                               child: GestureDetector(
-                                onTap: controller.isClaimed.value
-                                    ? null
-                                    : () {
-                                        Get.to(() => RewardDetailScreen(),
-                                            arguments: {
-                                              'data': reward,
-                                              'date': date
-                                            });
-                                      },
+                                onTap: () {
+                                  Get.to(() => RewardDetailScreen(),
+                                      arguments: {
+                                        'data': reward,
+                                        'date': date,
+                                        'rewardKey': rewardKey
+                                      });
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(18.r),
@@ -384,38 +390,37 @@ class MmrewardScreen extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(top: 7.r),
-                                        child: Obx(
-                                          () => ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          25)),
-                                              backgroundColor: Colors.blue,
-                                              foregroundColor: Colors.white,
-                                              textStyle: TextStyle(
-                                                fontSize: 18.r,
-                                                fontFamily: 'OpenSans',
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25)),
+                                            backgroundColor: Colors.blue,
+                                            foregroundColor: Colors.white,
+                                            textStyle: TextStyle(
+                                              fontSize: 18.r,
+                                              fontFamily: 'OpenSans',
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            onPressed:
-                                                controller.isClaimed.value
-                                                    ? null
-                                                    : () async {
-                                                        Get.to(
-                                                            () =>
-                                                                RewardDetailScreen(),
-                                                            arguments: {
-                                                              'data': reward,
-                                                              'date': date
-                                                            });
-                                                      },
-                                            child: Text(
-                                                controller.isClaimed.value
-                                                    ? 'Claimed'
-                                                    : 'Claim'),
                                           ),
+                                          onPressed: isClaimed
+                                              ? null
+                                              : () {
+                                                  claimedRewards[rewardKey] =
+                                                      true;
+                                                  box.write("claimedRewards",
+                                                      claimedRewards);
+                                                  Get.to(
+                                                      () =>
+                                                          RewardDetailScreen(),
+                                                      arguments: {
+                                                        'data': reward,
+                                                        'date': date,
+                                                        'rewardKey': rewardKey
+                                                      });
+                                                },
+                                          child: Text(
+                                              isClaimed ? 'Claimed' : 'Claim'),
                                         ),
                                       ),
                                     ],

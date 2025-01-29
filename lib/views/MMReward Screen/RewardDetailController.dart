@@ -37,9 +37,10 @@ import 'package:intl/intl.dart';
 class RewardDetailController extends GetxController {
   RxList<MMreward> reward = <MMreward>[].obs;
   RxString date = ''.obs;
+  RxString rewardKey = ''.obs;
+  RxBool isClaimed = false.obs;
   String opensans = 'OpenSans';
   int rewardCoins = 150; // Reward coin amount
-  RxBool isClaimed = false.obs; // Observable to track claim state
 
   @override
   void onInit() {
@@ -50,7 +51,8 @@ class RewardDetailController extends GetxController {
     }
     print(rewardData);
     date.value = Get.arguments['date'];
-    print(date);
+    rewardKey.value = Get.arguments['rewardKey'];
+    print(rewardKey.value);
     super.onInit();
   }
 
