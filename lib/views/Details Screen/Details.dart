@@ -37,7 +37,7 @@ class Detailscreen extends StatelessWidget {
             color: Colors.white,
             fontSize: 25.r,
             fontFamily: 'opensans',
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,

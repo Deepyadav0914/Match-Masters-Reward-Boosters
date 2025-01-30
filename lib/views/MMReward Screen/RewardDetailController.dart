@@ -5,7 +5,10 @@
 // class RewardDetailController extends GetxController {
 //   RxList<MMreward> reward = <MMreward>[].obs;
 //   RxString date = ''.obs;
+//   RxString rewardKey = ''.obs;
+//   RxInt index = 0.obs;
 //   String opensans = 'OpenSans';
+//   int rewardCoins = 150;
 //
 //   @override
 //   void onInit() {
@@ -16,7 +19,9 @@
 //     }
 //     print(rewardData);
 //     date.value = Get.arguments['date'];
-//     print(date);
+//     print(date.value);
+//     index.value = Get.arguments['index'];
+//     print(index.value);
 //     super.onInit();
 //   }
 //
@@ -28,9 +33,31 @@
 //     DateTime input = DateFormat('dd-MM-yyyy').parse(inputDate);
 //     return DateFormat('d MMM y').format(input);
 //   }
+//   // // Method to initialize coins from local storage
+//   void initializeClaimed() {
+//     // Load claimed or default to false
+//
+//
+//   }
+//
+//   //
+//   //
+//   // // Method to collect reward coins
+//   // void rewardClaimed() {
+//   //
+//   //   saveCoins(); // Save updated coins to local storage
+//   //   print("Total coins: ${totalCoins.value}");
+//   // }
+//   //
+//   // // Save totalCoins to local storage
+//   // void saveCoins() {
+//   //   box.write('totalCoins', totalCoins.value);
+//   // }
+//   //
 // }
 
 import 'package:get/get.dart';
+import '../../main.dart';
 import '../../model/rewardmodel.dart';
 import 'package:intl/intl.dart';
 
@@ -38,9 +65,9 @@ class RewardDetailController extends GetxController {
   RxList<MMreward> reward = <MMreward>[].obs;
   RxString date = ''.obs;
   RxString rewardKey = ''.obs;
-  RxBool isClaimed = false.obs;
+  RxInt index = 0.obs;
   String opensans = 'OpenSans';
-  int rewardCoins = 150; // Reward coin amount
+  int rewardCoins = 150;
 
   @override
   void onInit() {
@@ -51,8 +78,10 @@ class RewardDetailController extends GetxController {
     }
     print(rewardData);
     date.value = Get.arguments['date'];
-    rewardKey.value = Get.arguments['rewardKey'];
-    print(rewardKey.value);
+    print(date.value);
+    index.value = Get.arguments['index'];
+    print(index.value);
+    //initializeClaimed();
     super.onInit();
   }
 
@@ -64,4 +93,30 @@ class RewardDetailController extends GetxController {
     DateTime input = DateFormat('dd-MM-yyyy').parse(inputDate);
     return DateFormat('d MMM y').format(input);
   }
+//
+//   // // Method to initialize coins from local storage
+//   void initializeClaimed() {
+//     // Load claimed or default to false
+//
+//         box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+//     print("is claimed == $claimedRewards");
+//   }
+//
+//
+//
+// // Method to collect reward coins
+// void rewardClaimed() {
+//   String uniqueKey =
+//       "${controller.title}_${controller.date}_${controller.index}";
+//   print("uniqueKey == ${uniqueKey}");
+//   bool isClaime = initializeClaimed().uniqueKey ?? false;
+//   saveClaimed(); // Save updated coins to local storage
+//
+// }
+//
+// // Save totalCoins to local storage
+// void saveClaimed() {
+//   box.write('claimedRewards');
+// }
+
 }

@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../main.dart';
 import '../Gifs Screen/GifsController.dart';
-import 'MmrewardController.dart';
 import 'RewardDetailController.dart';
 
 class RewardDetailScreen extends StatelessWidget {
   RewardDetailScreen({super.key});
 
   final RewardDetailController controller = Get.put(RewardDetailController());
-  final Mmcontroller = Get.put(MmrewardController());
+
+  final claimedRewards = box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+  // print("is claimed == ${claimedRewards}");
 
   @override
   Widget build(BuildContext context) {
+    String uniqueKey =
+        "${controller.title}_${controller.date}_${controller.index}";
+    print("uniqueKey == ${uniqueKey}");
+
+    bool isClaime = claimedRewards[uniqueKey] ?? false;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -26,7 +33,7 @@ class RewardDetailScreen extends StatelessWidget {
             color: Colors.white,
             fontSize: 25.r,
             fontFamily: 'OpenSans',
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
@@ -91,10 +98,13 @@ class RewardDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildActionButton(
-                        controller.isClaimed.value ? 'Claimed' : 'Claim',
-                        controller.isClaimed.value
+                        isClaime ? 'Claimed' : 'Claim',
+                        isClaime
                             ? null
                             : () {
+                                claimedRewards[uniqueKey] = true;
+                                box.write("claimedRewards", claimedRewards);
+
                                 // Collect coins logic
                                 final gifsController =
                                     Get.put(GifsController());
@@ -106,7 +116,7 @@ class RewardDetailScreen extends StatelessWidget {
                                   "You have collected ${controller.rewardCoins} coins!",
                                   snackPosition: SnackPosition.TOP,
                                   padding: EdgeInsets.all(10.r),
-                                  backgroundColor: Colors.green.shade400,
+                                  backgroundColor: Colors.lightBlue,
                                   colorText: Colors.white,
                                 );
                               },

@@ -40,7 +40,6 @@ dependencies:
   get_storage:
   dio:
   intl:
-  url_launcher:
   cached_network_image:
   path_provider:
   saver_gallery:

@@ -29,7 +29,7 @@ class GifsScreen extends StatelessWidget {
                 color: Colors.white,
                 fontSize: 25.r,
                 fontFamily: 'OpenSans',
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
               ),
             ),
             centerTitle: true,

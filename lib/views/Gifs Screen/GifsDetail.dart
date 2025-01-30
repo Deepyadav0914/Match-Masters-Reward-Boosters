@@ -27,7 +27,7 @@ class GifsDetailScreen extends StatelessWidget {
             color: Colors.white,
             fontSize: 25.r,
             fontFamily: controller.opensans,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
