@@ -121,8 +121,7 @@ class GifsScreen extends StatelessWidget {
                             SizedBox(
                               height: (allgifs.length / 2).ceil() * 200.r,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.r, horizontal: 10.r),
+                                padding:  EdgeInsets.symmetric(vertical: 14.r,horizontal: 10.r),
                                 child: GridView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
@@ -133,8 +132,7 @@ class GifsScreen extends StatelessWidget {
                                   itemCount: allgifs.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 4.r, horizontal: 7.r),
+                                      padding: EdgeInsets.only(left: 6.r,right: 6.r,top: 7.r),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,

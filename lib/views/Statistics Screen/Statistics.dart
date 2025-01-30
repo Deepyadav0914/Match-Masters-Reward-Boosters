@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import '../Gifs Screen/GifsController.dart';
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
@@ -10,6 +12,7 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   String opensans = 'OpenSans';
+  final gifsController = Get.put(GifsController());
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +116,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                                     ),
                                   )
                                 : Text(
-                                    '176',
+                                    '${gifsController.totalCoins.value}',
                                     style: TextStyle(
                                       fontFamily: opensans,
                                       fontSize: 22.r,
