@@ -5,9 +5,14 @@ import '../../main.dart';
 import '../Gifs Screen/GifsController.dart';
 import 'RewardDetailController.dart';
 
-class RewardDetailScreen extends StatelessWidget {
-  RewardDetailScreen({super.key});
+class RewardDetailScreen extends StatefulWidget {
+  const RewardDetailScreen({super.key});
 
+  @override
+  State<RewardDetailScreen> createState() => _RewardDetailScreenState();
+}
+
+class _RewardDetailScreenState extends State<RewardDetailScreen> {
   final RewardDetailController controller = Get.put(RewardDetailController());
 
   final claimedRewards = box.read<Map<String, dynamic>>('claimedRewards') ?? {};
@@ -101,25 +106,42 @@ class RewardDetailScreen extends StatelessWidget {
                         isClaime ? 'Claimed' : 'Claim',
                         isClaime
                             ? null
-                            : () {
-                                claimedRewards[uniqueKey] = true;
-                                box.write("claimedRewards", claimedRewards);
+                            :() {
+                          Get.dialog(
+                            AlertDialog(
+                              title: Text('Confirm Claim'),
+                              content: Text('Are you sure you want to claim this reward?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      claimedRewards[uniqueKey] = true;
+                                      box.write("claimedRewards", claimedRewards);
+                                    });
 
-                                // Collect coins logic
-                                final gifsController =
-                                    Get.put(GifsController());
-                                gifsController.collectCoins(controller
-                                    .rewardCoins); // Update button state
+                                    final gifsController = Get.put(GifsController());
+                                    gifsController.collectCoins(controller.rewardCoins);
 
-                                Get.snackbar(
-                                  "Success!",
-                                  "You have collected ${controller.rewardCoins} coins!",
-                                  snackPosition: SnackPosition.TOP,
-                                  padding: EdgeInsets.all(10.r),
-                                  backgroundColor: Colors.lightBlue,
-                                  colorText: Colors.white,
-                                );
-                              },
+                                    Get.back();
+                                    Get.snackbar(
+                                      "Success!",
+                                      "You have collected ${controller.rewardCoins} coins!",
+                                      snackPosition: SnackPosition.TOP,
+                                      padding: EdgeInsets.all(10.r),
+                                      backgroundColor: Colors.lightBlue,
+                                      colorText: Colors.white,
+                                    );
+                                  },
+                                  child: Text('Claim'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       15.horizontalSpace,
                       _buildActionButton('Share', () {}),

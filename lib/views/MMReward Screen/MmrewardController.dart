@@ -8,6 +8,7 @@ class MmrewardController extends GetxController {
   var rewardData = RewardModel(data: []).obs;
   RxBool isLoading = true.obs;
   String opensans = 'OpenSans';
+  RxBool isClaimed = false.obs;
 
   @override
   void onInit() {

@@ -79,7 +79,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             menulist.name.toString(),
                             style: TextStyle(
                               fontFamily: opensans,
-                              fontSize: 25.r,
+                              fontSize: 22.r,
                               fontWeight: FontWeight.w600,
                               color: Colors.black87,
                             ),
@@ -107,7 +107,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                                     '7/40',
                                     style: TextStyle(
                                       fontFamily: opensans,
-                                      fontSize: 25.r,
+                                      fontSize: 22.r,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black87,
                                     ),
@@ -116,7 +116,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                                     '176',
                                     style: TextStyle(
                                       fontFamily: opensans,
-                                      fontSize: 25.r,
+                                      fontSize: 22.r,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black87,
                                     ),

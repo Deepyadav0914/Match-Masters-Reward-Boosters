@@ -6,9 +6,14 @@ import '../../main.dart';
 import 'MmrewardController.dart';
 import 'RewardDetail.dart';
 
-class MmrewardScreen extends StatelessWidget {
-  MmrewardScreen({super.key});
+class MmrewardScreen extends StatefulWidget {
+  const MmrewardScreen({super.key});
 
+  @override
+  State<MmrewardScreen> createState() => _MmrewardScreenState();
+}
+
+class _MmrewardScreenState extends State<MmrewardScreen> {
   final controller = Get.put(MmrewardController());
 
   @override
@@ -63,7 +68,7 @@ class MmrewardScreen extends StatelessWidget {
 
             final claimedRewards =
                 box.read<Map<String, dynamic>>('claimedRewards') ?? {};
-            print('msg==${claimedRewards}');
+            print('msg==$claimedRewards');
 
             return ListView.builder(
               itemCount: groupedData.keys.length,
@@ -87,13 +92,14 @@ class MmrewardScreen extends StatelessWidget {
                       height: (data.length / 2).ceil() * 200.r,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: 10.r, horizontal: 10.r),
+                            vertical: 14.r, horizontal: 10.r),
                         child: GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
+
                           ),
                           itemCount: data.length,
                           itemBuilder: (context, index) {
@@ -101,9 +107,10 @@ class MmrewardScreen extends StatelessWidget {
 
                             String rewardKey =
                                 "${reward.title}_${date}_${index}";
-                            print("rewardKey == ${rewardKey}");
+                            print("rewardKey == $rewardKey");
 
-                            bool isClaime = claimedRewards[rewardKey] ?? false;
+                            controller.isClaimed.value =
+                                claimedRewards[rewardKey] ?? false;
 
                             return Container(
                               decoration: BoxDecoration(
@@ -128,7 +135,11 @@ class MmrewardScreen extends StatelessWidget {
                                         'data': reward,
                                         'date': date,
                                         'index': index
-                                      });
+                                      })?.then(
+                                    (_) {
+                                      setState(() {});
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -177,26 +188,16 @@ class MmrewardScreen extends StatelessWidget {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(25)),
-                                            backgroundColor: isClaime == true
-                                                ? Colors.grey
-                                                : Colors.blue,
-                                            foregroundColor: Colors.white,
                                             textStyle: TextStyle(
                                               fontSize: 18.r,
                                               fontFamily: 'OpenSans',
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          onPressed: () {
-                                            Get.to(() => RewardDetailScreen(),
-                                                arguments: {
-                                                  'data': reward,
-                                                  'date': date,
-                                                  'index': index
-                                                });
-                                          },
-                                          child: Text(
-                                              isClaime ? 'Claimed' : 'Claim'),
+                                          onPressed: null,
+                                          child: Text(controller.isClaimed.value
+                                              ? 'Claimed'
+                                              : 'Claim'),
                                         ),
                                       ),
                                     ],
