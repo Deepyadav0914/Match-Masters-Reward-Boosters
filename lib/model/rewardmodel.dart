@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-RewardModel rewardModelFromJson(String str) => RewardModel.fromJson(json.decode(str));
+RewardModel rewardModelFromJson(String str) =>
+    RewardModel.fromJson(json.decode(str));
 
 String rewardModelToJson(RewardModel data) => json.encode(data.toJson());
 
@@ -12,12 +13,13 @@ class RewardModel {
   });
 
   factory RewardModel.fromJson(Map<String, dynamic> json) => RewardModel(
-    data: List<MMreward>.from(json["data"].map((x) => MMreward.fromJson(x))),
-  );
+        data:
+            List<MMreward>.from(json["data"].map((x) => MMreward.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
-  };
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+      };
 }
 
 class MMreward {
@@ -36,26 +38,18 @@ class MMreward {
   });
 
   factory MMreward.fromJson(Map<String, dynamic> json) => MMreward(
-    title: json["title"]!,
-    description: json["description"],
-    image: json["image"]!,
-    rewardUrl: json["rewardURL"],
-    date: json["date"],
-  );
-
-
+        title: json["title"]!,
+        description: json["description"],
+        image: json["image"]!,
+        rewardUrl: json["rewardURL"],
+        date: json["date"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "title": title,
-    "description": description,
-    "image": image,
-    "rewardURL": rewardUrl,
-    "date": date,
-  };
+        "title": title,
+        "description": description,
+        "image": image,
+        "rewardURL": rewardUrl,
+        "date": date,
+      };
 }
-
-
-
-
-
-

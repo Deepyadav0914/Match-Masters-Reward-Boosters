@@ -8,9 +8,7 @@ import 'GifsDetailController.dart';
 class GifsDetailScreen extends StatelessWidget {
   GifsDetailScreen({super.key});
 
-  final controller =
-      Get.put(GifsDetailController() // Pass sticker data as arguments
-          );
+  final controller = Get.put(GifsDetailController());
 
   @override
   Widget build(BuildContext context) {

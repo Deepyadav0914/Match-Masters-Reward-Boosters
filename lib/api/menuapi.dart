@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import '../model/gamemodel.dart';
 import '../model/gifmodel.dart';
@@ -52,5 +51,3 @@ class ApiCall {
     }
   }
 }
-
-

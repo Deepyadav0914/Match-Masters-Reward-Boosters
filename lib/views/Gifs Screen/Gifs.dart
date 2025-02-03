@@ -124,7 +124,6 @@ class _GifsScreenState extends State<GifsScreen> {
                     print(allgifs.length);
                     box.write('totalgif', allgifs.length);
 
-
                     return SafeArea(
                       child: SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -222,9 +221,23 @@ class _GifsScreenState extends State<GifsScreen> {
                                                             snackPosition:
                                                                 SnackPosition
                                                                     .TOP,
+                                                            duration:
+                                                                const Duration(
+                                                                    seconds: 3),
+                                                            icon: Icon(
+                                                                Icons
+                                                                    .cancel_outlined,
+                                                                color: Colors
+                                                                    .white),
                                                             padding:
                                                                 EdgeInsets.all(
                                                                     10.r),
+                                                            margin:
+                                                                EdgeInsets.all(
+                                                                    10.r),
+                                                            forwardAnimationCurve:
+                                                                Curves
+                                                                    .easeOutBack,
                                                             backgroundColor:
                                                                 Colors.red,
                                                             colorText:

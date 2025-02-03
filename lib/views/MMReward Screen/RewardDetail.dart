@@ -15,15 +15,12 @@ class RewardDetailScreen extends StatefulWidget {
 class _RewardDetailScreenState extends State<RewardDetailScreen> {
   final RewardDetailController controller = Get.put(RewardDetailController());
 
-
   @override
   Widget build(BuildContext context) {
-
-
-    final claimedRewards = box.read<Map<String, dynamic>>('claimedRewards') ?? {};
-     print("is claimed == ${claimedRewards.length}");
-     print("is claimed == ${claimedRewards}");
-
+    final claimedRewards =
+        box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+    print("is claimed == ${claimedRewards.length}");
+    print("is claimed == ${claimedRewards}");
 
     String uniqueKey =
         "${controller.title}_${controller.date}_${controller.index}";
@@ -140,8 +137,15 @@ class _RewardDetailScreenState extends State<RewardDetailScreen> {
                                             "Success!",
                                             "You have collected ${controller.rewardCoins} coins!",
                                             snackPosition: SnackPosition.TOP,
+                                            icon: Icon(Icons.done_outline,
+                                                color: Colors.white),
+                                            duration:
+                                                const Duration(seconds: 3),
                                             padding: EdgeInsets.all(10.r),
+                                            margin: EdgeInsets.all(10.r),
                                             backgroundColor: Colors.green,
+                                            forwardAnimationCurve:
+                                                Curves.easeOutBack,
                                             colorText: Colors.white,
                                           );
                                         },

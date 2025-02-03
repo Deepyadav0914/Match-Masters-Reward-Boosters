@@ -12,10 +12,10 @@ class GifsModel {
   });
 
   factory GifsModel.fromJson(Map<String, dynamic> json) => GifsModel(
-    data: List<String>.from(json["data"].map((x) => x)),
-  );
+        data: List<String>.from(json["data"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x)),
-  };
+        "data": List<dynamic>.from(data.map((x) => x)),
+      };
 }

@@ -12,8 +12,6 @@ class GifsController extends GetxController {
   RxInt index = 0.obs;
   int rewardCoins = 150;
 
-
-
   @override
   void onInit() {
     super.onInit();

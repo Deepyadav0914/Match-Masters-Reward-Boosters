@@ -113,15 +113,7 @@ class DataScreen extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 5.r),
         child: ListTile(
           onTap: () {
-            Get.to(
-                () => Detailscreen(
-                    // name: controller.name.value,
-                    // item: item,
-                    ),
-                arguments: {
-                  // 'name':controller.alldata[index].name,
-                  'data': item
-                });
+            Get.to(() => Detailscreen(), arguments: {'data': item});
           },
           title: Center(
             child: Padding(
@@ -163,10 +155,7 @@ class DataScreen extends StatelessWidget {
         margin: EdgeInsets.all(4.r),
         child: ListTile(
           onTap: () {
-            Get.to(() => Detailscreen(), arguments: {
-              // 'name':controller.alldata.first.name,
-              'data': item
-            });
+            Get.to(() => Detailscreen(), arguments: {'data': item});
           },
           leading: Text(
             '${index + 1}.',

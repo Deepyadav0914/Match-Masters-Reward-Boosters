@@ -27,8 +27,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
     final unlockGifs = box.read<Map<String, dynamic>>('unlockGifs') ?? {};
     print("unlockGifs == ${unlockGifs.length}");
 
+    // total GIFs
     final totalgif = box.read("totalgif");
-    print("count  ${totalgif}");
+    print("count == ${totalgif}");
 
     return Scaffold(
       appBar: AppBar(

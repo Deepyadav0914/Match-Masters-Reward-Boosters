@@ -44,7 +44,6 @@ dependencies:
   path_provider:
   saver_gallery:
   permission_handler:
-  fluttertoast:
   device_info_plus:
 
 

@@ -104,8 +104,7 @@ class _MmrewardScreenState extends State<MmrewardScreen> {
                           itemBuilder: (context, index) {
                             final reward = data[index];
 
-                            String rewardKey =
-                                "${reward.title}_${date}_$index";
+                            String rewardKey = "${reward.title}_${date}_$index";
                             print("rewardKey == $rewardKey");
 
                             controller.isClaimed.value =

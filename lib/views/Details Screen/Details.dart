@@ -74,8 +74,7 @@ class Detailscreen extends StatelessWidget {
                         controller.item!.title == ""
                     ? SizedBox()
                     : Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 15.r, horizontal: 20.r),
+                        padding: EdgeInsets.symmetric(horizontal: 20.r),
                         child: Column(
                           children: [
                             Center(
@@ -88,7 +87,13 @@ class Detailscreen extends StatelessWidget {
                                       fontSize: 25.r,
                                       fontFamily: 'opensans',
                                       color: Colors.black87,
-                                      fontWeight: FontWeight.w700),
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white,
+                                            offset: Offset(2.r, 1.r),
+                                            blurRadius: 4.r)
+                                      ],
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
@@ -98,7 +103,7 @@ class Detailscreen extends StatelessWidget {
                                         left: 15.r, right: 15.r),
                                     child: Divider(
                                       color: Colors.black,
-                                      thickness: 3,
+                                      thickness: 3.r,
                                     ),
                                   )
                                 : SizedBox(),
@@ -109,6 +114,12 @@ class Detailscreen extends StatelessWidget {
                                     fontSize: 22.r,
                                     fontFamily: 'opensans',
                                     color: Colors.black87,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white,
+                                          offset: Offset(2.r, 1.r),
+                                          blurRadius: 4.r)
+                                    ],
                                     fontWeight: FontWeight.w700),
                               ),
                             ),

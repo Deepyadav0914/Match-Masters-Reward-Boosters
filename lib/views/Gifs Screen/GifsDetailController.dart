@@ -3,7 +3,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:saver_gallery/saver_gallery.dart';
@@ -53,15 +54,32 @@ class GifsDetailController extends GetxController {
         androidRelativePath: "Pictures/appName/Match Master",
         skipIfExists: false,
       );
-      showToast('Sticker saved successfully.');
+      Get.snackbar(
+        "Sticker Download ",
+        "Sticker saved successfully.",
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 3),
+        icon: Icon(Icons.done_outline, color: Colors.white),
+        padding: EdgeInsets.all(10.r),
+        margin: EdgeInsets.all(10.r),
+        forwardAnimationCurve: Curves.easeOutBack,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     } catch (e) {
-      showToast('Sticker saving cancelled.');
+      Get.snackbar(
+        "Sticker Download ",
+        "Sticker saving cancelled.",
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 3),
+        icon: Icon(Icons.cancel_outlined, color: Colors.white),
+        padding: EdgeInsets.all(10.r),
+        margin: EdgeInsets.all(10.r),
+        forwardAnimationCurve: Curves.easeOutBack,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
-  }
-
-  /// Displays a toast message with the given information.
-  void showToast(String info) {
-    Fluttertoast.showToast(msg: info, toastLength: Toast.LENGTH_LONG);
   }
 
   @override
