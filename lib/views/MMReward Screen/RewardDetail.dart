@@ -15,11 +15,16 @@ class RewardDetailScreen extends StatefulWidget {
 class _RewardDetailScreenState extends State<RewardDetailScreen> {
   final RewardDetailController controller = Get.put(RewardDetailController());
 
-  final claimedRewards = box.read<Map<String, dynamic>>('claimedRewards') ?? {};
-  // print("is claimed == ${claimedRewards}");
 
   @override
   Widget build(BuildContext context) {
+
+
+    final claimedRewards = box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+     print("is claimed == ${claimedRewards.length}");
+     print("is claimed == ${claimedRewards}");
+
+
     String uniqueKey =
         "${controller.title}_${controller.date}_${controller.index}";
     print("uniqueKey == ${uniqueKey}");
@@ -106,42 +111,46 @@ class _RewardDetailScreenState extends State<RewardDetailScreen> {
                         isClaime ? 'Claimed' : 'Claim',
                         isClaime
                             ? null
-                            :() {
-                          Get.dialog(
-                            AlertDialog(
-                              title: Text('Confirm Claim'),
-                              content: Text('Are you sure you want to claim this reward?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Get.back(),
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      claimedRewards[uniqueKey] = true;
-                                      box.write("claimedRewards", claimedRewards);
-                                    });
+                            : () {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: Text('Confirm Claim'),
+                                    content: Text(
+                                        'Are you sure you want to claim this reward?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Get.back(),
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            claimedRewards[uniqueKey] = true;
+                                            box.write("claimedRewards",
+                                                claimedRewards);
+                                          });
 
-                                    final gifsController = Get.put(GifsController());
-                                    gifsController.collectCoins(controller.rewardCoins);
+                                          final gifsController =
+                                              Get.put(GifsController());
+                                          gifsController.collectCoins(
+                                              controller.rewardCoins);
 
-                                    Get.back();
-                                    Get.snackbar(
-                                      "Success!",
-                                      "You have collected ${controller.rewardCoins} coins!",
-                                      snackPosition: SnackPosition.TOP,
-                                      padding: EdgeInsets.all(10.r),
-                                      backgroundColor: Colors.lightBlue,
-                                      colorText: Colors.white,
-                                    );
-                                  },
-                                  child: Text('Claim'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                                          Get.back();
+                                          Get.snackbar(
+                                            "Success!",
+                                            "You have collected ${controller.rewardCoins} coins!",
+                                            snackPosition: SnackPosition.TOP,
+                                            padding: EdgeInsets.all(10.r),
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                          );
+                                        },
+                                        child: Text('Claim'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                       ),
                       15.horizontalSpace,
                       _buildActionButton('Share', () {}),

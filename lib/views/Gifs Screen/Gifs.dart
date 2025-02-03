@@ -3,17 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../main.dart';
 import '../../model/gifmodel.dart';
 import 'GifsController.dart';
 import 'GifsDetail.dart';
 
-class GifsScreen extends StatelessWidget {
-  final GifsController controller = Get.put(GifsController());
+class GifsScreen extends StatefulWidget {
+  const GifsScreen({super.key});
 
-  GifsScreen({super.key});
+  @override
+  State<GifsScreen> createState() => _GifsScreenState();
+}
+
+class _GifsScreenState extends State<GifsScreen> {
+  final controller = Get.put(GifsController());
 
   @override
   Widget build(BuildContext context) {
+    final unlockGifs = box.read<Map<String, dynamic>>('unlockGifs') ?? {};
+    print("unlockGifs == ${unlockGifs.length}");
+
     return GetBuilder<GifsController>(
       builder: (controller) {
         return Scaffold(
@@ -35,7 +44,7 @@ class GifsScreen extends StatelessWidget {
             centerTitle: true,
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 16.r),
+                padding: EdgeInsets.only(right: 10.r),
                 child: Container(
                   height: 36.r,
                   width: 100.r,
@@ -112,6 +121,9 @@ class GifsScreen extends StatelessWidget {
                     );
                   } else if (snapshot.hasData) {
                     final allgifs = snapshot.data!.data;
+                    print(allgifs.length);
+                    box.write('totalgif', allgifs.length);
+
 
                     return SafeArea(
                       child: SingleChildScrollView(
@@ -121,7 +133,8 @@ class GifsScreen extends StatelessWidget {
                             SizedBox(
                               height: (allgifs.length / 2).ceil() * 200.r,
                               child: Padding(
-                                padding:  EdgeInsets.symmetric(vertical: 14.r,horizontal: 10.r),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 14.r, horizontal: 10.r),
                                 child: GridView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
@@ -131,8 +144,15 @@ class GifsScreen extends StatelessWidget {
                                   ),
                                   itemCount: allgifs.length,
                                   itemBuilder: (context, index) {
+                                    String uniqueKey = "$index";
+                                    print("uniqueKey == $uniqueKey");
+
+                                    bool isLocked =
+                                        unlockGifs[uniqueKey] ?? false;
+
                                     return Padding(
-                                      padding: EdgeInsets.only(left: 6.r,right: 6.r,top: 7.r),
+                                      padding: EdgeInsets.only(
+                                          left: 6.r, right: 6.r, top: 7.r),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
@@ -157,40 +177,130 @@ class GifsScreen extends StatelessWidget {
                                                   'Gifs': allgifs[index]
                                                 });
                                           },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.r),
-                                              border: Border.all(
-                                                  width: 3.r,
-                                                  color: Colors.black),
-                                            ),
-                                            margin: EdgeInsets.all(4.r),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 12.r),
-                                                    child: CachedNetworkImage(
-                                                      placeholder: (context,
-                                                              url) =>
-                                                          LoadingAnimationWidget
-                                                              .threeArchedCircle(
-                                                        color: Colors.black45,
-                                                        size: 20.sp,
-                                                      ),
-                                                      imageUrl: allgifs[index]
-                                                          .toString(),
+                                          child: Stack(children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.r),
+                                                border: Border.all(
+                                                    width: 3.r,
+                                                    color: Colors.black),
+                                              ),
+                                              margin: EdgeInsets.all(4.r),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 12.r),
+                                                  child: CachedNetworkImage(
+                                                    placeholder: (context,
+                                                            url) =>
+                                                        LoadingAnimationWidget
+                                                            .threeArchedCircle(
+                                                      color: Colors.black45,
+                                                      size: 20.sp,
                                                     ),
+                                                    imageUrl: allgifs[index]
+                                                        .toString(),
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
+                                            isLocked
+                                                ? SizedBox()
+                                                : Positioned(
+                                                    top: 5.r,
+                                                    right: 5.r,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (controller
+                                                                .totalCoins
+                                                                .value <
+                                                            150) {
+                                                          Get.snackbar(
+                                                            "Not Enough Tokens",
+                                                            "You need at least 150 tokens to unlock this GIF.",
+                                                            snackPosition:
+                                                                SnackPosition
+                                                                    .TOP,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10.r),
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            colorText:
+                                                                Colors.white,
+                                                          );
+
+                                                          return;
+                                                        }
+
+                                                        setState(() {
+                                                          unlockGifs[
+                                                              uniqueKey] = true;
+                                                          box.write(
+                                                              "unlockGifs",
+                                                              unlockGifs);
+                                                        });
+
+                                                        final gifsController =
+                                                            Get.put(
+                                                                GifsController());
+                                                        gifsController
+                                                            .unlockedGifs(
+                                                                controller
+                                                                    .rewardCoins);
+                                                      },
+                                                      child: Container(
+                                                        height: 140.r,
+                                                        width: 130.r,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black
+                                                              .withOpacity(0.9),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.r),
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/images/lock.png',
+                                                              height: 60.r,
+                                                            ),
+                                                            8.verticalSpace,
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Image.asset(
+                                                                  'assets/images/reward.png',
+                                                                  height: 25.r,
+                                                                ),
+                                                                5.horizontalSpace,
+                                                                Text(
+                                                                    '150 Token',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            'OpenSans',
+                                                                        fontSize: 20
+                                                                            .r,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ]),
                                         ),
                                       ),
                                     );

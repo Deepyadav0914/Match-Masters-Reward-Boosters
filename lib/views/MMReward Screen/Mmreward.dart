@@ -99,14 +99,13 @@ class _MmrewardScreenState extends State<MmrewardScreen> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-
                           ),
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             final reward = data[index];
 
                             String rewardKey =
-                                "${reward.title}_${date}_${index}";
+                                "${reward.title}_${date}_$index";
                             print("rewardKey == $rewardKey");
 
                             controller.isClaimed.value =
@@ -195,9 +194,14 @@ class _MmrewardScreenState extends State<MmrewardScreen> {
                                             ),
                                           ),
                                           onPressed: null,
-                                          child: Text(controller.isClaimed.value
-                                              ? 'Claimed'
-                                              : 'Claim'),
+                                          child: Text(
+                                            controller.isClaimed.value
+                                                ? 'Claimed'
+                                                : 'Claim',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],

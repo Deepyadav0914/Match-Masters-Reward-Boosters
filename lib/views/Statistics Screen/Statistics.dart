@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../main.dart';
 import '../Gifs Screen/GifsController.dart';
 
 class StatisticsScreen extends StatefulWidget {
@@ -12,10 +13,23 @@ class StatisticsScreen extends StatefulWidget {
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
   String opensans = 'OpenSans';
+
   final gifsController = Get.put(GifsController());
 
   @override
   Widget build(BuildContext context) {
+    //  Total Time Reward Collected
+    final claimedRewards =
+        box.read<Map<String, dynamic>>('claimedRewards') ?? {};
+    print("is claimed == ${claimedRewards.length}");
+
+    //    Total Time Unlocked GIFs
+    final unlockGifs = box.read<Map<String, dynamic>>('unlockGifs') ?? {};
+    print("unlockGifs == ${unlockGifs.length}");
+
+    final totalgif = box.read("totalgif");
+    print("count  ${totalgif}");
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -83,7 +97,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             style: TextStyle(
                               fontFamily: opensans,
                               fontSize: 22.r,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
                           ),
@@ -98,32 +112,45 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                             menulist.name == 'Unlocked GIFs'
                                 ? Image.asset(
                                     'assets/images/gif.png',
-                                    height: 30.r,
+                                    height: 25.r,
                                   )
                                 : Image.asset(
                                     'assets/images/reward.png',
-                                    height: 30.r,
+                                    height: 25.r,
                                   ),
                             10.horizontalSpace,
                             menulist.name == 'Unlocked GIFs'
                                 ? Text(
-                                    '7/40',
+                                    '${unlockGifs.length}/$totalgif',
                                     style: TextStyle(
                                       fontFamily: opensans,
                                       fontSize: 22.r,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.black87,
                                     ),
                                   )
-                                : Text(
-                                    '${gifsController.totalCoins.value}',
-                                    style: TextStyle(
-                                      fontFamily: opensans,
-                                      fontSize: 22.r,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
+                                : menulist.name == 'Token Available'
+                                    ? Text(
+                                        '${gifsController.totalCoins.value}',
+                                        style: TextStyle(
+                                          fontFamily: opensans,
+                                          fontSize: 22.r,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      )
+                                    : menulist.name ==
+                                            'Total Time Reward Collected'
+                                        ? Text(
+                                            '${claimedRewards.length}',
+                                            style: TextStyle(
+                                              fontFamily: opensans,
+                                              fontSize: 22.r,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black87,
+                                            ),
+                                          )
+                                        : SizedBox(),
                           ],
                         ),
                       ],

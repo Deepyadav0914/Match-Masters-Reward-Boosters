@@ -9,6 +9,10 @@ class GifsController extends GetxController {
 
   // Total coins stored reactively
   RxInt totalCoins = 0.obs;
+  RxInt index = 0.obs;
+  int rewardCoins = 150;
+
+
 
   @override
   void onInit() {
@@ -29,8 +33,15 @@ class GifsController extends GetxController {
   }
 
   // Method to collect reward coins
-  void collectCoins(int coins,) {
+  void collectCoins(int coins) {
     totalCoins.value += coins;
+    saveCoins(); // Save updated coins to local storage
+    print("Total coins: ${totalCoins.value}");
+  }
+
+  // Method to unloacked Gifs
+  void unlockedGifs(int coins) {
+    totalCoins.value -= coins;
     saveCoins(); // Save updated coins to local storage
     print("Total coins: ${totalCoins.value}");
   }
