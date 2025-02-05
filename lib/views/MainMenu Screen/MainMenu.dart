@@ -11,6 +11,9 @@ import '../Setting Screen/Setting.dart';
 import '../Statistics Screen/Statistics.dart';
 
 class MenuScreen extends StatelessWidget {
+
+  static const String routeName='/MenuScreen';
+
   MenuScreen({super.key});
 
   final controller = Get.put(MainMenuController());
